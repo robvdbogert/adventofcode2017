@@ -3,9 +3,13 @@ if __name__ == '__main__':
         data = f.readline()
 
     count = len(data)
-    sum_digits = 0
-    for i in range(0, count):
-        if data[i] == data[(i + 1) % count]:
-            sum_digits += int(data[i])
 
-    print('Total =', sum_digits)
+    offsets = [1, int(count / 2)]
+
+    for offset in offsets:
+        sum_digits = 0
+        for i in range(0, count):
+            if data[i] == data[(i + offset) % count]:
+                sum_digits += int(data[i])
+
+        print('Total for offset {} = {}'.format(offset, sum_digits))

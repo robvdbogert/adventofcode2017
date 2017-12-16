@@ -11,6 +11,7 @@ if __name__ == '__main__':
     garbage = False
     ignore_next = False
     score = 0
+    nr_garbage_chars = 0
     while i < len(puzzle_input):
         if ignore_next:
             print('Ignoring {}'.format(puzzle_input[i]))
@@ -27,21 +28,30 @@ if __name__ == '__main__':
                 print('start group at level {}'.format(group_level))
                 group_level += 1
                 score += group_level
+            else:
+                nr_garbage_chars += 1
         elif c == '}':
             if not garbage:
                 group_level -= 1
                 print('end group at level {}'.format(group_level))
+            else:
+                nr_garbage_chars += 1
         elif c == '<':
             if not garbage:
                 print('start garbage')
                 garbage = True
+            else:
+                nr_garbage_chars += 1
         elif c == '>':
             if garbage:
                 print('end garbage')
                 garbage = False
         elif c == '!':
-            if not ignore_next:
-                ignore_next = True
+            ignore_next = True
+        elif garbage:
+            nr_garbage_chars += 1
+
         i += 1
 
     print('Score = {}'.format(score))
+    print('Number of garbage characters = {}'.format(nr_garbage_chars))

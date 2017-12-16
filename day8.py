@@ -1,14 +1,6 @@
 import operator
 import re
 
-puzzle_input = """
-b inc 5 if a > 1
-a inc 1 if b < 5
-c dec -10 if a >= 1
-c inc -20 if c == 10
-""".strip().split('\n')
-
-
 def get_puzzle_input():
     with open('./input/day8.txt') as f:
         content = f.readlines()

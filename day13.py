@@ -12,7 +12,7 @@ class App:
     end_position = None
     time = 0
 
-    def move(self):
+    def move_scanners(self):
         for (fw_key, firewall) in self.firewalls.items():
             if firewall['scanner_pos'] == firewall['range'] - 1:
                 firewall['direction'] = -1
@@ -46,16 +46,12 @@ class App:
             }
 
         self.end_position = max(x for x in self.firewalls.keys())
-        print('End position = {}'.format(self.end_position))
-
-        print(self.firewalls)
 
         total_severity = 0
         while self.position <= self.end_position:
             severity = self.calculate_severity()
             total_severity += severity
-            print('Severity at position {} = {}'.format(self.position, severity))
-            self.move()
+            self.move_scanners()
             self.position += 1
 
         print('Total severity = {}'.format(total_severity))

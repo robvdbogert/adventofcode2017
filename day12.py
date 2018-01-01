@@ -26,25 +26,41 @@ def is_linked(program_id, target_id, input_data, stack):
 if __name__ == '__main__':
     regex = re.compile('(?P<program>\d+) <-> (?P<links>.*)')
     lines = get_puzzle_input().split('\n')
-    programs = {}
-    target_id = 0
-    programs[target_id] = True
 
-    input_data = {}
+    last_program_id = int(regex.match(lines[-1]).group('program'))
+    target_ids = [x for x in range(0, last_program_id + 1)]
 
-    for line in lines:
-        matches = regex.match(line)
+    i = 0
+    total_groups = 0
+    while len(target_ids) > 0:
+        target_id = target_ids[0]
+        programs = {}
+        #target_id = 0
+        programs[target_id] = True
 
-        program = int(matches.group('program'))
-        links = [int(x) for x in matches.group('links').split(', ')]
+        input_data = {}
 
-        input_data[program] = links
+        for line in lines:
+            matches = regex.match(line)
 
-    for program_id in input_data:
-        stack = []
-        programs[program_id] = is_linked(program_id, target_id, input_data, stack)
+            program = int(matches.group('program'))
+            links = [int(x) for x in matches.group('links').split(', ')]
 
-    print('There are {} programs in the group that contains program {}'.format(
-        len([x for x in programs if programs[x] is True]),
-        target_id
-    ))
+            input_data[program] = links
+
+        for program_id in input_data:
+            stack = []
+            programs[program_id] = is_linked(program_id, target_id, input_data, stack)
+
+        print('There are {} programs in the group that contains program {}'.format(
+            len([x for x in programs if programs[x] is True]),
+            target_id
+        ))
+
+        for p in [x for x in programs if programs[x] is True]:
+            target_ids.remove(p)
+
+        print('Remaining ids: {}'.format(len(target_ids)))
+        total_groups += 1
+
+    print('Total number of groups is {}'.format(total_groups))
